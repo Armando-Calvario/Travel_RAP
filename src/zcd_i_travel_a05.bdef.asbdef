@@ -1,0 +1,79 @@
+managed; //implementation in class zbp_cd_i_travel_a05 unique;
+//strict ( 2 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
+
+define behavior for ZCD_I_TRAVEL_A05 alias Travel
+implementation in class zbp_cd_i_travel_a05 unique
+persistent table ztb_travel_a05
+lock master
+authorization master ( instance )
+etag master last_changed_at
+{
+  // admministrative fields: read only
+  field ( readonly ) last_changed_at, last_changed_by, created_at, created_by;
+  // mandatory fields that are required to create a travel
+  field ( mandatory ) agency_id, overall_status, booking_fee, currency_code;
+  // dynamic field control
+  field ( features : instance ) travel_id;
+
+  create;
+  update;
+  delete;
+
+  // validation
+  validation validateCustomer on save { field customer_id; }
+  validation validateDates on save { field begin_date, end_date; }
+  validation validateStatus on save { field overall_status; }
+
+  action ( features : instance ) acceptTravel result [1] $self;
+  action ( features : instance ) rejectTravel result [1] $self;
+
+  action createTravelByTemplate result [1] $self;
+
+  association _Booking { create; }
+
+  mapping
+       for ztb_log_a05 corresponding;
+    }
+
+  define behavior for ZCD_I_BOOKING_A05 alias Booking
+  implementation in class zbp_cd_i_booking_a05 unique
+  persistent table ztb_booking_a05
+  lock dependent by _Travel
+  authorization dependent by _Travel
+  etag master last_changed_at
+  {
+    // static fields control
+    field ( readonly ) travel_id;
+    field ( mandatory ) carrier_id, connection_id, flight_date, booking_status;
+
+    update;
+    delete;
+
+    // validation
+    validation validateStatus on save { field booking_status; }
+
+    determination calculateTotalFlightPrice on modify { field flight_price, currency_code; }
+
+    association _Travel;
+    association _BookSupplement { create; }
+  }
+
+  define behavior for ZCD_I_BOOKSUPP_A05 alias Supplement
+  implementation in class zbp_cd_i_booksupp_a05 unique
+  with unmanaged save
+  lock dependent by _Travel
+  authorization dependent by _Travel
+  etag master last_changed_at
+  {
+    field ( readonly ) travel_id, booking_id;
+    field ( mandatory ) supplement_id, price;
+
+    update;
+    delete;
+
+    // determination
+    determination calculateTotalSuppPrice on modify { field price, currency_code; }
+
+    association _Travel;
+    association _Booking;
+  }
