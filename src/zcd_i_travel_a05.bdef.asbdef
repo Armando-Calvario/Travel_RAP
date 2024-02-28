@@ -13,7 +13,7 @@ etag master last_changed_at
   // mandatory fields that are required to create a travel
   field ( mandatory ) agency_id, overall_status, booking_fee, currency_code;
   // dynamic field control
-  field ( features : instance ) travel_id;
+  field ( features : instance ) travel_id, overall_status;
 
   create;
   update;
@@ -32,7 +32,7 @@ etag master last_changed_at
   association _Booking { create; }
 
   mapping
-       for ztb_log_a05 corresponding;
+       for ztb_travel_a05 corresponding;
     }
 
   define behavior for ZCD_I_BOOKING_A05 alias Booking
@@ -56,6 +56,9 @@ etag master last_changed_at
 
     association _Travel;
     association _BookSupplement { create; }
+
+    mapping
+       for ztb_booking_a05 corresponding;
   }
 
   define behavior for ZCD_I_BOOKSUPP_A05 alias Supplement
@@ -76,4 +79,7 @@ etag master last_changed_at
 
     association _Travel;
     association _Booking;
+
+    mapping
+       for ztb_booksupp_a05 corresponding;
   }
