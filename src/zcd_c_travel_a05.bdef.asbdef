@@ -19,7 +19,7 @@ use etag
 define behavior for ZCD_C_BOOKING_A05 alias BookingProcessor
 {
   use update;
-  // use delete;
+  use delete;
 
   use association _Travel;
   use association _BookSupplement { create; }
@@ -28,7 +28,7 @@ define behavior for ZCD_C_BOOKING_A05 alias BookingProcessor
 define behavior for ZCD_C_BOOKSUPP_A05 alias SupplementProcessor
 {
   use update;
-  //use delete;
+  use delete;
 
   use association _Travel;
   use association _Booking;
