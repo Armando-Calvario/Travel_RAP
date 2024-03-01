@@ -44,7 +44,6 @@ CLASS zcl_aux_travel_det_a05 IMPLEMENTATION.
                            %control-flight_price = if_abap_behv=>mk-on
                            %control-currency_code = if_abap_behv=>mk-on ) )
          RESULT DATA(lt_read_booking).
-
     LOOP AT lt_read_booking INTO DATA(ls_booking)
         GROUP BY ls_booking-travel_id INTO DATA(lv_travel_key).
 
