@@ -5,7 +5,7 @@
 @Metadata.allowExtensions: true
 define view ZCD_I_BOOKING_A05
   as select from ztb_booking_a05 as Booking
-  association        to parent ZCD_I_TRAVEL_A05 as _Travel     on  $projection.travel_id = _Travel.travel_id
+  association        to parent ZCD_I_TRAVEL_A05 as _Travel     on  $projection.travel_id      = _Travel.travel_id
   composition [0..*] of ZCD_I_BOOKSUPP_A05      as _BookSupplement
   association [1..1] to /DMO/I_Customer         as _Customer   on  $projection.customer_id = _Customer.CustomerID
   association [1..1] to /DMO/I_Carrier          as _Carrier    on  $projection.carrier_id = _Carrier.AirlineID
