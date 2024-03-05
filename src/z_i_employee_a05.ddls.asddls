@@ -1,11 +1,11 @@
-@AbapCatalog.sqlViewName: 'ZV_HCM_A05'
+@AbapCatalog.sqlViewName: 'ZV_EMPL_A05'
 @AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'Employee - Master'
-define root view Z_I_HCM_MASTER_A05
-  as select from zhcm_master as HCMMaster
+@EndUserText.label: 'Employees'
+define root view Z_I_EMPLOYEE_A05
+  as select from zemployee_a05 as Employee
 {
-
+      //Employee
   key e_number,
       e_name,
       e_department,
